@@ -1,0 +1,7 @@
+obj/Debug/net10.0/CoprocessObject.cs \
+obj/Debug/net10.0/CoprocessObjectGrpc.cs: Protos/coprocess_return_overrides.proto\
+ Protos/coprocess_mini_request_object.proto\
+ Protos/coprocess_response_object.proto\
+ Protos/coprocess_session_state.proto\
+ Protos/coprocess_common.proto\
+ Protos/coprocess_object.proto

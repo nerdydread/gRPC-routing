@@ -1,0 +1,30 @@
+components: {}
+info:
+  title: Internal Vendor API
+  version: 1.0.0
+openapi: 3.0.3
+paths: {}
+servers:
+  - url: http://tyk-gateway:8080/internal-vendor-api
+  - url: /internal-vendor-api
+x-tyk-api-gateway:
+  info:
+    dbId: 69e28f6a1d83440001580bcd
+    id: internal-vendor-api-1
+    name: Internal Vendor API
+    orgId: 69e16dc88cee200001df906f
+    state:
+      active: true
+      internal: true
+  middleware:
+    global:
+      contextVariables:
+        enabled: true
+      trafficLogs:
+        enabled: true
+  server:
+    listenPath:
+      strip: true
+      value: /internal-vendor-api/
+  upstream:
+    url: http://httpbin.org/

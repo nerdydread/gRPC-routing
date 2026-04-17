@@ -1,0 +1,47 @@
+components:
+  securitySchemes:
+    authToken:
+      in: header
+      name: Authorization
+      type: apiKey
+info:
+  title: Loyalty API
+  version: 1.0.0
+openapi: 3.0.3
+paths: {}
+security:
+  - authToken: []
+servers:
+  - url: http://tyk-gateway:8080/loyalty-api
+  - url: /loyalty-api
+x-tyk-api-gateway:
+  info:
+    dbId: 69e28da41d83440001580bcc
+    id: loyalty-api
+    name: Loyalty API
+    orgId: 69e16dc88cee200001df906f
+    state:
+      active: true
+  middleware:
+    global:
+      contextVariables:
+        enabled: true
+      pluginConfig:
+        driver: grpc
+      postPlugins:
+        - enabled: true
+          functionName: RouteRequest
+          path: ''
+      trafficLogs:
+        enabled: true
+  server:
+    authentication:
+      enabled: true
+      securitySchemes:
+        authToken:
+          enabled: true
+    listenPath:
+      strip: true
+      value: /loyalty-api/
+  upstream:
+    url: http://httpbin.org/
