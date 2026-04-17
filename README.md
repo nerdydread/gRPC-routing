@@ -20,35 +20,32 @@ Tyk API definitions (OAS + `x-tyk-api-gateway` extensions):
 #### Request Flow
 ```mermaid
 sequenceDiagram
-    participant C as Client
-    participant T as Tyk Gateway<br/>Loyalty API
-    participant G as gRPC POST Plugin<br/>RoutingRequest
-    participant V1 as Vendor API 1<br/>(Internal)
-    participant V2 as Internal API 2<br/>(Internal)
+    autonumber
+    participant Client
+    participant Tyk as Tyk Gateway<br/>(Loyalty API)
+    participant gRPC as gRPC Plugin<br/>(Post-Plugin)
+    participant API1 as Internal Vendor API 1
+    participant API2 as Internal API 2
 
-    C->>T: HTTP request
-
-    activate T
-    note over T: Auth & Rate Limit
-
-    T->>G: Invoke post-plugin
-    activate G
-
-    note over G: Evaluate business logic
-
+    Client->>Tyk: HTTP Request to Loyalty API
+    
+    Note over Tyk: Pre-processing phases<br/>(Auth, Rate Limiting, etc.)
+    
+    Tyk->>gRPC: Trigger Post-Plugin<br/>(Send Request Data)
+    
+    Note over gRPC: Evaluate business logic<br/>Determine target route
+    
     alt Route to Vendor API 1
-        G-->>T: set request.URL → Vendor API 1
-        deactivate G
-        T->>V1: Route → Vendor API 1
-        V1-->>T: Backend response
-    else Route to Internal API 2
-        G-->>T: set request.URL → Internal API 2
-        T->>V2: Route → Internal API 2
-        V2-->>T: Backend response
+        gRPC-->>Tyk: Return mutated request<br/>(request.URL = Internal Vendor API 1)
+        Tyk->>API1: Proxy Request to Vendor API 1
+        API1-->>Tyk: Return Response
+    else Route to Internal Vendor API 2
+        gRPC-->>Tyk: Return mutated request<br/>(request.URL = Internal Vendor API 2)
+        Tyk->>API2: Proxy Request to Internal Vendor API 2
+        API2-->>Tyk: Return Response
     end
-
-    deactivate T
-    T-->>C: HTTP response
+    
+    Tyk-->>Client: Return Final HTTP Response
 ```
 
 #### Commands to build and run gRPC Service
