@@ -25,7 +25,7 @@ sequenceDiagram
     participant Tyk as Tyk Gateway<br/>(Loyalty API)
     participant gRPC as gRPC Plugin<br/>(Post-Plugin)
     participant API1 as Internal Vendor API 1
-    participant API2 as Internal API 2
+    participant API2 as Internal Vendor API 2
 
     Client->>Tyk: HTTP Request to Loyalty API
     
